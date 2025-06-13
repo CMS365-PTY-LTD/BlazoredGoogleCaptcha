@@ -104,3 +104,101 @@ In the example aboue, I have the counter button disbaled on the page load.
 Once the user clicks on the reCAPTCHA checkbox and passes the verification, the button will be enabled.
 
 ![alt text](https://github.com/CMS365-PTY-LTD/BlazoredGoogleCaptcha/blob/main/images/step6.png?raw=true)
+
+## V3 ReCaptcha
+
+Open the 'CounterV3.razor' page and add the following code:
+```
+@page "/counterv3"
+
+@using BlazoredGoogleCaptcha.Models
+@using BlazoredGoogleCaptcha.Responses
+@using BlazoredGoogleCaptcha.Services
+
+@rendermode InteractiveServer
+
+@inject IConfiguration configuration
+@inject CaptchaService captchaService
+
+<PageTitle>Counter</PageTitle>
+<h1>Counter</h1>
+
+<p role="status">Current count: @currentCount</p>
+
+<Captcha SiteKey="@configuration["v3SiteKey"]" @ref="recaptchaV3" OnVerified="@HandleVerification" Version="CaptchaVersionEnum.V3"></Captcha>
+@if (showV2)
+{
+    <Captcha SiteKey="@configuration["v2SiteKey"]" OnSuccess="@OnCaptchaSuccess" OnExpired="@OnCaptchaExpired"></Captcha>
+}
+<button class="btn btn-primary" @onclick="IncrementCount" disabled="@IsButtonDisabled">Click me</button>
+
+@code {
+    private int currentCount = 0;
+    private Captcha? recaptchaV3;
+    private float lastScore = 1.0f;
+    private bool showV2 = false;
+    private bool IsButtonDisabled = false;
+    private bool captchaVerified = false;
+
+    private async Task IncrementCount()
+    {
+        await recaptchaV3.ExecuteAsync("Login");
+    }
+    private async Task HandleVerification((string Token, string Action) result)
+    {
+        string token = result.Token;
+        captchaVerified = false;
+        string? captchaSecret = configuration["v3SecretKey"];
+        try
+        {
+            Responses.CaptchaV3Response? captchaResponse = await captchaService.VerifyV3(captchaSecret, result.Token, null);
+            if (captchaResponse.Success)
+            {
+                lastScore = captchaResponse.Score;
+                IsButtonDisabled = false;
+                captchaVerified = true;
+                currentCount++;
+                StateHasChanged();
+            }
+            if (lastScore < 0.5 || captchaVerified==false)
+            {
+                showV2 = true;
+                IsButtonDisabled = true;
+                StateHasChanged();
+            }
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
+    private async void OnCaptchaSuccess(string response)
+    {
+        string? captchaSecret = configuration["v2SecretKey"];
+        CaptchaV2Response? captchaResponse = await captchaService.VerifyV2(captchaSecret, response);
+        if (captchaResponse.Success)
+        {
+            captchaVerified = true;
+            IsButtonDisabled = false; 
+            currentCount++;
+            showV2 = false;
+            StateHasChanged();
+        }
+        else
+        {
+            //show error message or handle failure
+        }
+    }
+    private void OnCaptchaExpired()
+    {
+        captchaVerified = false;
+    }
+}
+
+```
+
+Make sure you set V3 in the `Captcha` component.
+
+V3 is an ivisible reCAPTCHA, so it will be executed when the user clicks on the button. Response will be returned to the `HandleVerification` method, where you can verify the response with your secret key.
+
+V3 captcha will return a score, which you can use to determine if the user is a bot or not. If the score is less than 0.5, you can show V2 reCAPTCHA to the user.

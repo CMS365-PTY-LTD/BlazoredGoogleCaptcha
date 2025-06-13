@@ -1,5 +1,6 @@
 ﻿@page "/counterv3"
 
+@using BlazoredGoogleCaptcha.Models
 @using BlazoredGoogleCaptcha.Responses
 @using BlazoredGoogleCaptcha.Services
 
@@ -13,7 +14,7 @@
 
 <p role="status">Current count: @currentCount</p>
 
-<Captcha SiteKey="@configuration["v3SiteKey"]" @ref="recaptchaV3" OnVerified="@HandleVerification" Version="BlazoredGoogleCaptcha.Models.CaptchaVersionEnum.V3"></Captcha>
+<Captcha SiteKey="@configuration["v3SiteKey"]" @ref="recaptchaV3" OnVerified="@HandleVerification" Version="CaptchaVersionEnum.V3"></Captcha>
 @if (showV2)
 {
     <Captcha SiteKey="@configuration["v2SiteKey"]" OnSuccess="@OnCaptchaSuccess" OnExpired="@OnCaptchaExpired"></Captcha>
