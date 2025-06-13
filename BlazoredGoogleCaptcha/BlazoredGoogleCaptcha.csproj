@@ -4,6 +4,25 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+	  <PackageID>CMS365.BlazoredGoogleCaptcha</PackageID>
+	  <Title>BlazoredGoogleCaptcha</Title>
+	  <Version>9.0.1</Version>
+	  <Authors>Shafaqat Ali</Authors>
+	  <Company>CMS365 PTY LTD</Company>
+	  <Description>
+		  BlazoredGoogleCaptcha is a lightweight .NET library that simplifies Google reCAPTCHA integration in Blazor WebAssembly (WASM) and Blazor Server applications. It provides an easy-to-use component for both reCAPTCHA v2 ("I'm not a robot" checkbox) and reCAPTCHA v3 (invisible background verification).
+	  </Description>
+	  <PackageProjectUrl>https://github.com/CMS365-PTY-LTD/BlazoredGoogleCaptcha</PackageProjectUrl>
+	  <PackageIcon>BlazoredGoogleCaptcha.png</PackageIcon>
+	  <PackageIconUrl>
+		  https://raw.githubusercontent.com/CMS365-PTY-LTD/EbaySharp/refs/heads/main/BlazoredGoogleCaptcha.ico
+	  </PackageIconUrl>
+	  <PackageReadmeFile>readme.md</PackageReadmeFile>
+	  <RepositoryUrl>https://github.com/CMS365-PTY-LTD/BlazoredGoogleCaptcha.git</RepositoryUrl>
+	  <PackageTags>eBay;.net;c#</PackageTags>
+	  <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+	  <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+	  <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
   </PropertyGroup>
 
 
