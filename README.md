@@ -3,7 +3,6 @@
 [![NuGet](https://img.shields.io/nuget/v/CMS365.BlazoredGoogleCaptcha.svg?logo=nuget)](https://www.nuget.org/packages/CMS365.BlazoredGoogleCaptcha/)
 ![NuGet Downloads](https://img.shields.io/nuget/dt/CMS365.BlazoredGoogleCaptcha)
 ![GitHub last commit (main)](https://img.shields.io/github/last-commit/CMS365-PTY-LTD/BlazoredGoogleCaptcha/main.svg?logo=github)
-[![Build status](https://img.shields.io/azure-devops/build/cms-365/BlazoredGoogleCaptcha/9.svg?logo=azuredevops)](https://cms-365.visualstudio.com/BlazoredGoogleCaptcha/_build?definitionID=9)
 [![License](https://img.shields.io/badge/license-MIT-green)](./LICENSE)
 ![GitHub Stars](https://img.shields.io/github/stars/CMS365-PTY-LTD/BlazoredGoogleCaptcha?style=social)
 
@@ -17,4 +16,9 @@ console in Visual Studio to install it:
 ```pwsh
 Install-Package CMS365.BlazoredGoogleCaptcha
 ```
+
+## Getting started
+Install the package and create 2 seperate pages for V2 and V3 reCAPTCHA.
+
+In the demo project, I have created 2 pages : 'CounterV2.razor' and 'CounterV3.razor'.
 
