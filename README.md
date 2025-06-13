@@ -18,7 +18,64 @@ Install-Package CMS365.BlazoredGoogleCaptcha
 ```
 
 ## Getting started
+Navigate to https://www.google.com/recaptcha/admin/create and register 2 sites.
+
+Select "Score based (v3)" for the first site and "Checkbox (v2)" for the second site.
+![alt text](https://github.com/CMS365-PTY-LTD/BlazoredGoogleCaptcha/blob/main/images/step2.png?raw=true)
+Add demail, for example localhost for testing purposes.
+Also select Google Cloud Platform project, if you have one, or create a new one.
+Once the projct has been created, click on the settings icon in the top right corner of the page and copy the site key and secret key for both reCAPTCHA v2 and v3.
+![alt text](https://github.com/CMS365-PTY-LTD/BlazoredGoogleCaptcha/blob/main/images/step3.png?raw=true)
+
+
 Install the package and create 2 seperate pages for V2 and V3 reCAPTCHA.
 
 In the demo project, I have created 2 pages : 'CounterV2.razor' and 'CounterV3.razor'.
+
+![alt text](https://github.com/CMS365-PTY-LTD/BlazoredGoogleCaptcha/blob/main/images/step1.png?raw=true)
+
+## V2 ReCaptcha
+Open the 'CounterV2.razor' page and add the following code:
+```@page "/counterv2"
+
+@inject CaptchaService captchaService
+
+<PageTitle>Counter</PageTitle>
+<h1>Counter</h1>
+
+<p role="status">Current count: @currentCount</p>
+
+<BlazoredGoogleCaptcha.BlazoredGoogleCaptcha 
+    SiteKey="YOUR_SITE_KEY" OnSuccess="@OnCaptchaSuccess" OnExpired="@OnCaptchaExpired">
+</BlazoredGoogleCaptcha.BlazoredGoogleCaptcha>
+<button class="btn btn-primary" @onclick="IncrementCount" disabled="@IsButtonDisabled">Click me</button>
+
+@code {
+    private int currentCount = 0;
+    private bool captchaVerified = false;
+    private bool IsButtonDisabled => !captchaVerified;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+    private async void OnCaptchaSuccess(string response)
+    {
+        string? captchaSecret = "YOUR_SECRET";
+        CaptchaV2Response? captchaResponse= await captchaService.VerifyV2(captchaSecret, response);
+        if (captchaResponse.Success)
+        {
+            captchaVerified = true;
+            StateHasChanged();
+        }
+        else
+        {
+            //show error message or handle failure
+        }
+    }
+    private void OnCaptchaExpired()
+    {
+        captchaVerified = false;
+    }
+}
 
