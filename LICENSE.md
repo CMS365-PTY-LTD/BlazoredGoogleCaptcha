@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2025 CMS365 PTY LTD
+Copyright (c) 2024 Shafaqat Ali
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

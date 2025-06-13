@@ -5,3 +5,5 @@
 /.vs
 /BlazoredGoogleCaptcha/obj
 /BlazoredGoogleCaptcha/bin
+/BlazoredGoogleCaptcha.Demo/obj
+*.user

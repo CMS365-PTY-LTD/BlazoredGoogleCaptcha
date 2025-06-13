@@ -9,21 +9,36 @@
 	  <Version>9.0.1</Version>
 	  <Authors>Shafaqat Ali</Authors>
 	  <Company>CMS365 PTY LTD</Company>
-	  <Description>
-		  BlazoredGoogleCaptcha is a lightweight .NET library that simplifies Google reCAPTCHA integration in Blazor WebAssembly (WASM) and Blazor Server applications. It provides an easy-to-use component for both reCAPTCHA v2 ("I'm not a robot" checkbox) and reCAPTCHA v3 (invisible background verification).
+	  <Description>BlazoredGoogleCaptcha is a lightweight .NET library that simplifies Google reCAPTCHA integration in Blazor WebAssembly (WASM) and Blazor Server applications. It provides an easy-to-use component for both reCAPTCHA v2 ("I'm not a robot" checkbox) and reCAPTCHA v3 (invisible background verification).
 	  </Description>
 	  <PackageProjectUrl>https://github.com/CMS365-PTY-LTD/BlazoredGoogleCaptcha</PackageProjectUrl>
 	  <PackageIcon>BlazoredGoogleCaptcha.png</PackageIcon>
 	  <PackageIconUrl>
 		  https://raw.githubusercontent.com/CMS365-PTY-LTD/EbaySharp/refs/heads/main/BlazoredGoogleCaptcha.ico
 	  </PackageIconUrl>
-	  <PackageReadmeFile>readme.md</PackageReadmeFile>
+	  <PackageReadmeFile>README.md</PackageReadmeFile>
 	  <RepositoryUrl>https://github.com/CMS365-PTY-LTD/BlazoredGoogleCaptcha.git</RepositoryUrl>
-	  <PackageTags>eBay;.net;c#</PackageTags>
+	  <PackageTags>eBay;.net;c#,google,captcha,recaptcha</PackageTags>
 	  <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 	  <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
 	  <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+	  <RepositoryType>git</RepositoryType>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\BlazoredGoogleCaptcha.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\LICENSE.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
 
   <ItemGroup>
