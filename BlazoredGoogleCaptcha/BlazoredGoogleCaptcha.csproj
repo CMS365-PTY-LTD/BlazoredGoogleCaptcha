@@ -26,6 +26,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\scripts\captcha_v2.js" />
+    <Content Remove="wwwroot\scripts\captcha_v3.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="..\BlazoredGoogleCaptcha.png">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
@@ -38,6 +43,8 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
+    <None Include="wwwroot\scripts\captcha_v2.js" />
+    <None Include="wwwroot\scripts\captcha_v3.js" />
   </ItemGroup>
 
 

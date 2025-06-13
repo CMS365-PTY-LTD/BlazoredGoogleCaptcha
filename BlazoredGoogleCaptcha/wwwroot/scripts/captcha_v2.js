@@ -33,7 +33,6 @@ export function renderRecaptcha(element, siteKey, dotNetObject) {
     return doRender(element, siteKey, dotNetObject);
 }
 function doRender(element, siteKey, dotNetObject) {
-    debugger;
     return grecaptcha.render(element, {
         sitekey: siteKey,
         callback: (response) => dotNetObject.invokeMethodAsync('HandleSuccess', response),

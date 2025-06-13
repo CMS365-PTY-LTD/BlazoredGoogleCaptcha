@@ -22,10 +22,15 @@ Navigate to https://www.google.com/recaptcha/admin/create and register 2 sites.
 
 Select "Score based (v3)" for the first site and "Checkbox (v2)" for the second site.
 ![alt text](https://github.com/CMS365-PTY-LTD/BlazoredGoogleCaptcha/blob/main/images/step2.png?raw=true)
-Add demail, for example localhost for testing purposes.
+Add demain, for example localhost for testing purposes.
+
 Also select Google Cloud Platform project, if you have one, or create a new one.
+
 Once the projct has been created, click on the settings icon in the top right corner of the page and copy the site key and secret key for both reCAPTCHA v2 and v3.
+
 ![alt text](https://github.com/CMS365-PTY-LTD/BlazoredGoogleCaptcha/blob/main/images/step3.png?raw=true)
+
+![alt text](https://github.com/CMS365-PTY-LTD/BlazoredGoogleCaptcha/blob/main/images/step4.png?raw=true)
 
 
 Install the package and create 2 seperate pages for V2 and V3 reCAPTCHA.
@@ -35,6 +40,11 @@ In the demo project, I have created 2 pages : 'CounterV2.razor' and 'CounterV3.r
 ![alt text](https://github.com/CMS365-PTY-LTD/BlazoredGoogleCaptcha/blob/main/images/step1.png?raw=true)
 
 ## V2 ReCaptcha
+
+Add the following code to your `Program.cs` file to register the `CaptchaService` and configure the BlazoredGoogleCaptcha component:
+```csharp
+builder.Services.AddSingleton<CaptchaService>();
+```
 Open the 'CounterV2.razor' page and add the following code:
 ```@page "/counterv2"
 
@@ -78,4 +88,4 @@ Open the 'CounterV2.razor' page and add the following code:
         captchaVerified = false;
     }
 }
-
+```
