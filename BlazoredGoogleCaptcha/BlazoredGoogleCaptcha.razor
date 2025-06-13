@@ -1,0 +1,91 @@
+﻿@using Microsoft.JSInterop 
+@using global::BlazoredGoogleCaptcha.Models
+
+@inject IJSRuntime JSRuntime 
+
+<div id="recaptcha-container" @ref="recaptchaContainer"></div> 
+
+@code {
+
+    private ElementReference recaptchaContainer; 
+    private DotNetObjectReference<BlazoredGoogleCaptcha>? dotNetObjectReference;
+    private int widgetId;
+    private Lazy<Task<IJSObjectReference>> moduleTaskV2;
+    private Lazy<Task<IJSObjectReference>> moduleTaskV3;
+
+    [Parameter] 
+    public string SiteKey { get; set; } = string.Empty;
+    [Parameter]
+    public CaptchaVersionEnum Version { get; set; } = CaptchaVersionEnum.V2;
+    [Parameter] 
+    public EventCallback<string> OnSuccess { get; set; } 
+    [Parameter] 
+    public EventCallback OnExpired { get; set; }
+    [Parameter]
+    public EventCallback<(string Token, string Score)> OnVerified { get; set; }
+
+
+    protected override async Task OnAfterRenderAsync(bool firstRender) 
+    { 
+        if (firstRender) 
+        { 
+            dotNetObjectReference = DotNetObjectReference.Create(this);
+            if (Version== CaptchaVersionEnum.V2)
+            {
+                moduleTaskV2 = new(() => JSRuntime.InvokeAsync<IJSObjectReference>(
+                    "import", "./_content/BlazoredGoogleCaptcha/scripts/captcha_v2.js").AsTask());
+                var module = await moduleTaskV2.Value;
+                await module.InvokeVoidAsync("loadRecaptcha");
+                widgetId = await module.InvokeAsync<int>("renderRecaptcha", recaptchaContainer, SiteKey, dotNetObjectReference);
+            }
+            else if (Version== CaptchaVersionEnum.V3)
+            {
+                moduleTaskV3 = new(() => JSRuntime.InvokeAsync<IJSObjectReference>(
+            "import", "./_content/BlazoredGoogleCaptcha/scripts/captcha_v3.js").AsTask());
+                var module = await moduleTaskV3.Value;
+                await module.InvokeVoidAsync("ensureRecaptchaLoaded", SiteKey);
+            }
+        } 
+    } 
+
+    [JSInvokable] 
+    public void HandleSuccess(string response) 
+    { 
+        OnSuccess.InvokeAsync(response); 
+    } 
+
+    [JSInvokable] 
+    public void HandleExpired() 
+    { 
+        OnExpired.InvokeAsync(); 
+    }
+    public async Task<string> ExecuteAsync(string action)
+    {
+        if (moduleTaskV3.Value == null || dotNetObjectReference == null)
+            return string.Empty;
+        var module = await moduleTaskV3.Value;
+        return await module.InvokeAsync<string>(
+            "executeRecaptchaV3",
+            SiteKey,
+            action,
+            dotNetObjectReference);
+    }
+    [JSInvokable]
+    public void HandleVerification(string token, string action)
+    {
+        OnVerified.InvokeAsync((token, action));
+    }
+
+    public void Dispose() 
+    { 
+        dotNetObjectReference?.Dispose(); 
+        if (moduleTaskV2 is not null)
+        {
+            moduleTaskV2.Value.Dispose();
+        }
+        if (moduleTaskV3 is not null)
+        {
+            moduleTaskV3.Value.Dispose();
+        }
+    } 
+} 
