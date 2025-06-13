@@ -33,7 +33,7 @@
             if (Version== CaptchaVersionEnum.V2)
             {
                 moduleTaskV2 = new(() => JSRuntime.InvokeAsync<IJSObjectReference>(
-                    "import", "./_content/BlazoredGoogleCaptcha/scripts/captcha_v2.js").AsTask());
+                    "import", "./_content/CMS365.BlazoredGoogleCaptcha/scripts/captcha_v2.js").AsTask());
                 var module = await moduleTaskV2.Value;
                 await module.InvokeVoidAsync("loadRecaptcha");
                 widgetId = await module.InvokeAsync<int>("renderRecaptcha", recaptchaContainer, SiteKey, dotNetObjectReference);
@@ -41,7 +41,7 @@
             else if (Version== CaptchaVersionEnum.V3)
             {
                 moduleTaskV3 = new(() => JSRuntime.InvokeAsync<IJSObjectReference>(
-            "import", "./_content/BlazoredGoogleCaptcha/scripts/captcha_v3.js").AsTask());
+            "import", "./_content/CMS365.BlazoredGoogleCaptcha/scripts/captcha_v3.js").AsTask());
                 var module = await moduleTaskV3.Value;
                 await module.InvokeVoidAsync("ensureRecaptchaLoaded", SiteKey);
             }
