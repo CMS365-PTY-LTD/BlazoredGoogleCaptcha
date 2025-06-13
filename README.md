@@ -1,4 +1,4 @@
-# BlazoredGoogleCaptcha: Google reCAPTCHA V1 and V2 for Blazor
+# BlazoredGoogleCaptcha: Google reCAPTCHA V2 and V3 for Blazor
 
 [![NuGet](https://img.shields.io/nuget/v/CMS365.BlazoredGoogleCaptcha.svg?logo=nuget)](https://www.nuget.org/packages/CMS365.BlazoredGoogleCaptcha/)
 ![NuGet Downloads](https://img.shields.io/nuget/dt/CMS365.BlazoredGoogleCaptcha)
