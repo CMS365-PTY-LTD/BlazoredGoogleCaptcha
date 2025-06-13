@@ -1,19 +1,85 @@
 ﻿@page "/counterv3"
+
+@using BlazoredGoogleCaptcha.Responses
+@using BlazoredGoogleCaptcha.Services
+
 @rendermode InteractiveServer
 
-<PageTitle>Counter V3</PageTitle>
+@inject IConfiguration configuration
+@inject CaptchaService captchaService
 
+<PageTitle>Counter</PageTitle>
 <h1>Counter</h1>
 
 <p role="status">Current count: @currentCount</p>
 
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<Captcha SiteKey="@configuration["v3SiteKey"]" @ref="recaptchaV3" OnVerified="@HandleVerification" Version="BlazoredGoogleCaptcha.Models.CaptchaVersionEnum.V3"></Captcha>
+@if (showV2)
+{
+    <Captcha SiteKey="@configuration["v2SiteKey"]" OnSuccess="@OnCaptchaSuccess" OnExpired="@OnCaptchaExpired"></Captcha>
+}
+<button class="btn btn-primary" @onclick="IncrementCount" disabled="@IsButtonDisabled">Click me</button>
 
 @code {
     private int currentCount = 0;
+    private Captcha? recaptchaV3;
+    private float lastScore = 1.0f;
+    private bool showV2 = false;
+    private bool IsButtonDisabled = false;
+    private bool captchaVerified = false;
 
-    private void IncrementCount()
+    private async Task IncrementCount()
     {
-        currentCount++;
+        await recaptchaV3.ExecuteAsync("Login");
+    }
+    private async Task HandleVerification((string Token, string Action) result)
+    {
+        string token = result.Token;
+        captchaVerified = false;
+        string? captchaSecret = configuration["v3SecretKey"];
+        try
+        {
+            Responses.CaptchaV3Response? captchaResponse = await captchaService.VerifyV3(captchaSecret, result.Token, null);
+            if (captchaResponse.Success)
+            {
+                lastScore = captchaResponse.Score;
+                IsButtonDisabled = false;
+                captchaVerified = true;
+                currentCount++;
+                StateHasChanged();
+            }
+            if (lastScore < 0.5 || captchaVerified==false)
+            {
+                showV2 = true;
+                IsButtonDisabled = true;
+                StateHasChanged();
+            }
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
+    private async void OnCaptchaSuccess(string response)
+    {
+        string? captchaSecret = configuration["v2SecretKey"];
+        CaptchaV2Response? captchaResponse = await captchaService.VerifyV2(captchaSecret, response);
+        if (captchaResponse.Success)
+        {
+            captchaVerified = true;
+            IsButtonDisabled = false; 
+            currentCount++;
+            showV2 = false;
+            StateHasChanged();
+        }
+        else
+        {
+            //show error message or handle failure
+        }
+    }
+    private void OnCaptchaExpired()
+    {
+        captchaVerified = false;
     }
 }
+

@@ -8,6 +8,9 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 builder.Services.AddSingleton<CaptchaService>();
+builder.Services.AddServerSideBlazor(options => {
+    options.DetailedErrors = true;
+});
 
 var app = builder.Build();
 

@@ -1,18 +1,19 @@
 ﻿@page "/counterv2"
 
-
 @rendermode InteractiveServer
 
+@using BlazoredGoogleCaptcha.Responses
+@using BlazoredGoogleCaptcha.Services
+
 @inject IConfiguration configuration
-@inject Services.CaptchaService captchaService
+@inject CaptchaService captchaService
 
 <PageTitle>Counter</PageTitle>
 <h1>Counter</h1>
 
 <p role="status">Current count: @currentCount</p>
 
-<BlazoredGoogleCaptcha.BlazoredGoogleCaptcha SiteKey="" OnSuccess="@OnCaptchaSuccess" OnExpired="@OnCaptchaExpired">
-</BlazoredGoogleCaptcha.BlazoredGoogleCaptcha>
+<Captcha SiteKey="@configuration["v2SiteKey"]" OnSuccess="@OnCaptchaSuccess" OnExpired="@OnCaptchaExpired"></Captcha>
 <button class="btn btn-primary" @onclick="IncrementCount" disabled="@IsButtonDisabled">Click me</button>
 
 @code {
@@ -26,8 +27,8 @@
     }
     private async void OnCaptchaSuccess(string response)
     {
-        string? captchaSecret = "";
-        Responses.CaptchaV2Response? captchaResponse = await captchaService.VerifyV2(captchaSecret, response);
+        string? captchaSecret = configuration["v2SecretKey"];
+        CaptchaV2Response? captchaResponse = await captchaService.VerifyV2(captchaSecret, response);
         if (captchaResponse.Success)
         {
             captchaVerified = true;

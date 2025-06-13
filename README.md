@@ -1,4 +1,4 @@
-# BlazoredGoogleCaptcha: A .NET wrapper library for eBay REST API.
+# BlazoredGoogleCaptcha: Google reCAPTCHA V1 and V2 for Blazor
 
 [![NuGet](https://img.shields.io/nuget/v/CMS365.BlazoredGoogleCaptcha.svg?logo=nuget)](https://www.nuget.org/packages/CMS365.BlazoredGoogleCaptcha/)
 ![NuGet Downloads](https://img.shields.io/nuget/dt/CMS365.BlazoredGoogleCaptcha)
@@ -46,8 +46,15 @@ Add the following code to your `Program.cs` file to register the `CaptchaService
 builder.Services.AddSingleton<CaptchaService>();
 ```
 Open the 'CounterV2.razor' page and add the following code:
-```@page "/counterv2"
+```
+@page "/counterv2"
 
+@rendermode InteractiveServer
+
+@using BlazoredGoogleCaptcha.Responses
+@using BlazoredGoogleCaptcha.Services
+
+@inject IConfiguration configuration
 @inject CaptchaService captchaService
 
 <PageTitle>Counter</PageTitle>
@@ -55,9 +62,7 @@ Open the 'CounterV2.razor' page and add the following code:
 
 <p role="status">Current count: @currentCount</p>
 
-<BlazoredGoogleCaptcha.BlazoredGoogleCaptcha 
-    SiteKey="YOUR_SITE_KEY" OnSuccess="@OnCaptchaSuccess" OnExpired="@OnCaptchaExpired">
-</BlazoredGoogleCaptcha.BlazoredGoogleCaptcha>
+<Captcha SiteKey="@configuration["v2SiteKey"]" OnSuccess="@OnCaptchaSuccess" OnExpired="@OnCaptchaExpired"></Captcha>
 <button class="btn btn-primary" @onclick="IncrementCount" disabled="@IsButtonDisabled">Click me</button>
 
 @code {
@@ -71,8 +76,8 @@ Open the 'CounterV2.razor' page and add the following code:
     }
     private async void OnCaptchaSuccess(string response)
     {
-        string? captchaSecret = "YOUR_SECRET";
-        CaptchaV2Response? captchaResponse= await captchaService.VerifyV2(captchaSecret, response);
+        string? captchaSecret = configuration["v2SecretKey"];
+        CaptchaV2Response? captchaResponse = await captchaService.VerifyV2(captchaSecret, response);
         if (captchaResponse.Success)
         {
             captchaVerified = true;
@@ -88,4 +93,14 @@ Open the 'CounterV2.razor' page and add the following code:
         captchaVerified = false;
     }
 }
+
 ```
+By default, V2 will be rendered.
+
+In the example aboue, I have the counter button disbaled on the page load. 
+
+![alt text](https://github.com/CMS365-PTY-LTD/BlazoredGoogleCaptcha/blob/main/images/step5.png?raw=true)
+
+Once the user clicks on the reCAPTCHA checkbox and passes the verification, the button will be enabled.
+
+![alt text](https://github.com/CMS365-PTY-LTD/BlazoredGoogleCaptcha/blob/main/images/step6.png?raw=true)

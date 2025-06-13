@@ -1,5 +1,5 @@
-﻿@using Microsoft.JSInterop 
-@using global::BlazoredGoogleCaptcha.Models
+﻿@using BlazoredGoogleCaptcha.Models
+@using Microsoft.JSInterop 
 
 @inject IJSRuntime JSRuntime 
 
@@ -8,7 +8,7 @@
 @code {
 
     private ElementReference recaptchaContainer; 
-    private DotNetObjectReference<BlazoredGoogleCaptcha>? dotNetObjectReference;
+    private DotNetObjectReference<Captcha>? dotNetObjectReference;
     private int widgetId;
     private Lazy<Task<IJSObjectReference>> moduleTaskV2;
     private Lazy<Task<IJSObjectReference>> moduleTaskV3;
@@ -41,7 +41,7 @@
             else if (Version== CaptchaVersionEnum.V3)
             {
                 moduleTaskV3 = new(() => JSRuntime.InvokeAsync<IJSObjectReference>(
-            "import", "./_content/CMS365.BlazoredGoogleCaptcha/scripts/captcha_v3.js").AsTask());
+                    "import", "./_content/CMS365.BlazoredGoogleCaptcha/scripts/captcha_v3.js").AsTask());
                 var module = await moduleTaskV3.Value;
                 await module.InvokeVoidAsync("ensureRecaptchaLoaded", SiteKey);
             }
@@ -64,11 +64,7 @@
         if (moduleTaskV3.Value == null || dotNetObjectReference == null)
             return string.Empty;
         var module = await moduleTaskV3.Value;
-        return await module.InvokeAsync<string>(
-            "executeRecaptchaV3",
-            SiteKey,
-            action,
-            dotNetObjectReference);
+        return await module.InvokeAsync<string>("executeRecaptchaV3", SiteKey, action, dotNetObjectReference);
     }
     [JSInvokable]
     public void HandleVerification(string token, string action)
