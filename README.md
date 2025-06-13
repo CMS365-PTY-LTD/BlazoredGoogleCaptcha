@@ -103,7 +103,7 @@ In the example aboue, I have the counter button disbaled on the page load.
 
 Once the user clicks on the reCAPTCHA checkbox and passes the verification, the button will be enabled.
 
-![alt text](https://github.com/CMS365-PTY-LTD/BlazoredGoogleCaptcha/blob/main/images/step6.png?raw=true)
+![alt text](https://github.com/CMS365-PTY-LTD/BlazoredGoogleCaptcha/blob/main/images/package.gif?raw=true)
 
 ## V3 ReCaptcha
 
