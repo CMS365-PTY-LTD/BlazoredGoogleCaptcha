@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
 	  <PackageID>CMS365.BlazoredGoogleCaptcha</PackageID>
 	  <Title>BlazoredGoogleCaptcha</Title>
-	  <Version>9.0.5</Version>
+	  <Version>9.0.6</Version>
 	  <Authors>Shafaqat Ali</Authors>
 	  <Company>CMS365 PTY LTD</Company>
 	  <Description>BlazoredGoogleCaptcha is a lightweight .NET library that simplifies Google reCAPTCHA integration in Blazor WebAssembly (WASM) and Blazor Server applications. It provides an easy-to-use component for both reCAPTCHA v2 ("I'm not a robot" checkbox) and reCAPTCHA v3 (invisible background verification).
