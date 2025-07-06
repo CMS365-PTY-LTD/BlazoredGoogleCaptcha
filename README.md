@@ -199,6 +199,6 @@ Open the 'CounterV3.razor' page and add the following code:
 
 Make sure you set V3 in the `Captcha` component.
 
-V3 is an ivisible reCAPTCHA, so it will be executed when the user clicks on the button. Response will be returned to the `HandleVerification` method, where you can verify the response with your secret key.
+V3 is an invisible reCAPTCHA, so it will be executed when the user clicks on the button. Response will be returned to the `HandleVerification` method, where you can verify the response with your secret key.
 
 V3 captcha will return a score, which you can use to determine if the user is a bot or not. If the score is less than 0.5, you can show V2 reCAPTCHA to the user.
