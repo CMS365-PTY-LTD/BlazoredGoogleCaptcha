@@ -16,14 +16,11 @@ namespace BlazoredGoogleCaptcha.Services
             var captchaResponse = JsonSerializer.Deserialize<CaptchaV2Response>(content);
             return captchaResponse;
         }
-        public async Task<CaptchaV3Response> VerifyV3(string secretKey, string token, string? remoteIp = null)
+        public async Task<CaptchaV3Response> VerifyV3(string secretKey, string token, string remoteIp = null)
         {
-            var content = new FormUrlEncodedContent(new[]
-            {
-                new KeyValuePair<string, string>("secret", secretKey),
+            var content = new FormUrlEncodedContent([ new KeyValuePair<string, string>("secret", secretKey),
                 new KeyValuePair<string, string>("response", token),
-                new KeyValuePair<string, string>("remoteip", remoteIp ?? "")
-            });
+                new KeyValuePair<string, string>("remoteip", remoteIp ?? "")]);
             HttpClient httpClient = new HttpClient();
             var response = await httpClient.PostAsync(
                 "https://www.google.com/recaptcha/api/siteverify",
