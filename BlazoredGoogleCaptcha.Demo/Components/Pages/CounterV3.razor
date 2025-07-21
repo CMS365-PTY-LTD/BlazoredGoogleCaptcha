@@ -23,7 +23,7 @@
 
 @code {
     private int currentCount = 0;
-    private Captcha? recaptchaV3;
+    private Captcha recaptchaV3;
     private float lastScore = 1.0f;
     private bool showV2 = false;
     private bool IsButtonDisabled = false;
@@ -37,10 +37,10 @@
     {
         string token = result.Token;
         captchaVerified = false;
-        string? captchaSecret = configuration["v3SecretKey"];
+        string captchaSecret = configuration["v3SecretKey"];
         try
         {
-            Responses.CaptchaV3Response? captchaResponse = await captchaService.VerifyV3(captchaSecret, result.Token, null);
+            Responses.CaptchaV3Response captchaResponse = await captchaService.VerifyV3(captchaSecret, result.Token, null);
             if (captchaResponse.Success)
             {
                 lastScore = captchaResponse.Score;
@@ -63,8 +63,8 @@
     }
     private async void OnCaptchaSuccess(string response)
     {
-        string? captchaSecret = configuration["v2SecretKey"];
-        CaptchaV2Response? captchaResponse = await captchaService.VerifyV2(captchaSecret, response);
+        string captchaSecret = configuration["v2SecretKey"];
+        CaptchaV2Response captchaResponse = await captchaService.VerifyV2(captchaSecret, response);
         if (captchaResponse.Success)
         {
             captchaVerified = true;

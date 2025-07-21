@@ -1,0 +1,37 @@
+name: Build DEV
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+jobs:
+  build:
+    name: "Build"
+    runs-on: windows-latest
+    environment: DEV
+    env:
+      PROJECT_FILE: ${{ github.workspace }}"\\BlazoredGoogleCaptcha\\BlazoredGoogleCaptcha.csproj"
+    steps:
+    - uses: actions/checkout@v4
+    # - name: Print all environment variables
+    #   run: |
+    #     echo "=== ALL ENVIRONMENT VARIABLES ==="
+    #     if ($IsWindows) {
+    #       Get-ChildItem env: | Format-Table
+    #     } else {
+    #       printenv | sort
+    #     }
+    #   shell: pwsh  # Uses PowerShell Core (works on Windows/Linux/macOS)
+    # - name: List ALL files
+    #   run: |
+    #     Write-Output "Full repository structure:"
+    #     Get-ChildItem -Recurse | Format-Table FullName
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 9.0.x
+    # - name: Verify solution Path
+    #   run: ls -la $SLN_FILE
+    - name: Restore dependencies
+      run: dotnet restore $env:PROJECT_FILE
+    - name: Build
+      run: dotnet build $env:PROJECT_FILE --no-restore --configuration Release

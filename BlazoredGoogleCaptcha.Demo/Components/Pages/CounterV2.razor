@@ -27,8 +27,8 @@
     }
     private async void OnCaptchaSuccess(string response)
     {
-        string? captchaSecret = configuration["v2SecretKey"];
-        CaptchaV2Response? captchaResponse = await captchaService.VerifyV2(captchaSecret, response);
+        string captchaSecret = configuration["v2SecretKey"];
+        CaptchaV2Response captchaResponse = await captchaService.VerifyV2(captchaSecret, response);
         if (captchaResponse.Success)
         {
             captchaVerified = true;
